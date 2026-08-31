@@ -75,23 +75,23 @@ for repo_def in data.get("github_repositories", []):
     # Every commit to main must be GPG- or SSH-signed by the committing developer.
     # This satisfies code-commit signing requirements in regulated environments
     # (SOC 2, ISO 27001) and provides a cryptographic audit trail.
-    # github.BranchProtection(
-    #     f"{repo_name}-main-branch-protection",
-    #     repository_id=repo.node_id,
-    #     pattern="main",
-    #     enforce_admins=True,
-    #     require_signed_commits=True,
-    #     required_pull_request_reviews=[
-    #         github.BranchProtectionRequiredPullRequestReviewArgs(
-    #             dismiss_stale_reviews=True,
-    #             required_approving_review_count=1,
-    #         )
-    #     ],
-    #     opts=ResourceOptions(
-    #         provider=github_provider,
-    #         depends_on=[repo],
-    #     ),
-    # )
+    github.BranchProtection(
+        f"{repo_name}-main-branch-protection",
+        repository_id=repo.node_id,
+        pattern="main",
+        enforce_admins=True,
+        require_signed_commits=True,
+        required_pull_request_reviews=[
+            github.BranchProtectionRequiredPullRequestReviewArgs(
+                dismiss_stale_reviews=True,
+                required_approving_review_count=1,
+            )
+        ],
+        opts=ResourceOptions(
+            provider=github_provider,
+            depends_on=[repo],
+        ),
+    )
 
     # Export the repository name for use by other Pulumi stacks
     export(f"{repo_name}_repo_name", repo.name)

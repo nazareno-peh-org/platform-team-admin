@@ -24,16 +24,16 @@ github_repositories:
   # Chapter 1 Repos
   - name: platform-team-admin
     description: Repository to manage platform team membership and admin artifacts
-    visibility: private
+    visibility: public
   - name: platform-core
     description: Core platform runtime
-    visibility: private
+    visibility: public
   - name: platform-demo-apps
     description: Demo application for testing the platform
-    visibility: private
+    visibility: public
   - name: platform-extensions
     description: Demo application for testing the platform
-    visibility: private
+    visibility: public
 
 # ── GitHub Organization Members ───────────────────────────────────────────────
 # Each entry adds (or updates) a member in your GitHub organization.
