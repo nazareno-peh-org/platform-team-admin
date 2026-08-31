@@ -2,3 +2,5 @@ config:
   github:token:
     secure: AAABACbs9rGkU9AoEgqon45vV6lbcE6rz0/CCbBKBkpUZ+K1BEXa9WpOraAwtsDURfexhUlEeR07O0LAm1EmRk5guc3FiXdzLESx5odstv7xSIlqra0DNAZS8RfiWYLRjO20N6iBNo0LhckTUwykVroPwqP1OQ4qnVA+hv0=
   github:owner: nazareno-peh-org
+  pulumi:token:
+    secure: AAABAKsYIyhptdUf7khCohWtbCRZW2RHOZD/DNs0vKJ7g+nRLWZHTPPBAcZ8EeEb7k9f50vmVqFGA2LCKXkDudS7DKyUdtpcGWnwYw==
