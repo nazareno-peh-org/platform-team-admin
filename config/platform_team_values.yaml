@@ -1,0 +1,14 @@
+github_repositories:
+  # Chapter 1 Repos
+  - name: platform-team-admin
+    description: Repository to manage platform team membership and admin artifacts
+    visibility: private
+  - name: platform-core
+    description: Core platform runtime
+    visibility: private
+  - name: platform-demo-apps
+    description: Demo application for testing the platform
+    visibility: private
+  - name: platform-extensions
+    description: Demo application for testing the platform
+    visibility: private
