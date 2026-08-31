@@ -79,8 +79,8 @@ for repo_def in data.get("github_repositories", []):
         f"{repo_name}-main-branch-protection",
         repository_id=repo.node_id,
         pattern="main",
-        enforce_admins=True,
-        require_signed_commits=True,
+        enforce_admins=False,
+        require_signed_commits=False,
         required_pull_request_reviews=[
             github.BranchProtectionRequiredPullRequestReviewArgs(
                 dismiss_stale_reviews=True,
