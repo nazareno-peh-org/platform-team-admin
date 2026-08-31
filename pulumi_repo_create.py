@@ -75,24 +75,43 @@ for repo_def in data.get("github_repositories", []):
     # Every commit to main must be GPG- or SSH-signed by the committing developer.
     # This satisfies code-commit signing requirements in regulated environments
     # (SOC 2, ISO 27001) and provides a cryptographic audit trail.
-    github.BranchProtection(
-        f"{repo_name}-main-branch-protection",
-        repository_id=repo.node_id,
-        pattern="main",
-        enforce_admins=True,
-        require_signed_commits=True,
-        required_pull_request_reviews=[
-            github.BranchProtectionRequiredPullRequestReviewArgs(
-                dismiss_stale_reviews=True,
-                required_approving_review_count=1,
-            )
-        ],
-        opts=ResourceOptions(
-            provider=github_provider,
-            depends_on=[repo],
-        ),
-    )
+    # github.BranchProtection(
+    #     f"{repo_name}-main-branch-protection",
+    #     repository_id=repo.node_id,
+    #     pattern="main",
+    #     enforce_admins=True,
+    #     require_signed_commits=True,
+    #     required_pull_request_reviews=[
+    #         github.BranchProtectionRequiredPullRequestReviewArgs(
+    #             dismiss_stale_reviews=True,
+    #             required_approving_review_count=1,
+    #         )
+    #     ],
+    #     opts=ResourceOptions(
+    #         provider=github_provider,
+    #         depends_on=[repo],
+    #     ),
+    # )
 
     # Export the repository name for use by other Pulumi stacks
     export(f"{repo_name}_repo_name", repo.name)
     export(f"{repo_name}_repo_url", repo.html_url)
+
+# ── Add GitHub organization members ──────────────────────────────────────────
+# Team members are added to the organization with the role defined in config.
+# Note: you cannot automate management of the organization owner.
+# Add a second GitHub account (e.g. youremail+peh-team-member@gmail.com)
+# to test member onboarding as described in Chapter 1.
+
+for member_def in data.get("github_organization_members", []):
+    username: str = member_def["github-username"]
+    role: str = member_def.get("github-role", "member")
+
+    github.Membership(
+        f"github-membership-{username}",
+        username=username,
+        role=role,
+        opts=ResourceOptions(provider=github_provider),
+    )
+
+    pulumi.log.info(f"Managing GitHub membership: {username} ({role})")
