@@ -3,3 +3,4 @@ venv/
 .env
 
 secrets-setup/github_secrets.json
+secrets-setup/pulumi_secrets.json
