@@ -23,15 +23,10 @@ filter_definitions:
 
 jobs:
   pulumi-preview:
-    docker:
-      - image: cimg/python:3.10
+    machine: true
+    resource_class: nazareno-peh-org/local-runner-2
     steps:
       - checkout
-      - run:
-          name: Install Pulumi CLI
-          command: |
-            curl -fsSL https://get.pulumi.com | sh
-            echo 'export PATH=$HOME/.pulumi/bin:$PATH' >> $BASH_ENV
       - run:
           name: Install Python dependencies
           command: |
@@ -44,15 +39,10 @@ jobs:
             pulumi preview --color always --non-interactive
 
   pulumi-up:
-    docker:
-      - image: cimg/python:3.10
+    machine: true
+    resource_class: nazareno-peh-org/local-runner-2
     steps:
       - checkout
-      - run:
-          name: Install Pulumi CLI
-          command: |
-            curl -fsSL https://get.pulumi.com | sh
-            echo 'export PATH=$HOME/.pulumi/bin:$PATH' >> $BASH_ENV
       - run:
           name: Install Python dependencies
           command: |

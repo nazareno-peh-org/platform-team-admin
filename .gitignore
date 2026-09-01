@@ -4,3 +4,4 @@ venv/
 
 secrets-setup/github_secrets.json
 secrets-setup/pulumi_secrets.json
+secrets-setup/circleci_secrets.json
