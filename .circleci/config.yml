@@ -24,7 +24,7 @@ filter_definitions:
 jobs:
   pulumi-preview:
     machine: true
-    resource_class: nazareno-peh-org/local-runner-2
+    resource_class: nazareno-peh-org/dev-runner
     steps:
       - checkout
       - run:
@@ -40,7 +40,7 @@ jobs:
 
   pulumi-up:
     machine: true
-    resource_class: nazareno-peh-org/local-runner-2
+    resource_class: nazareno-peh-org/dev-runner
     steps:
       - checkout
       - run:
