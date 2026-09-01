@@ -24,20 +24,18 @@ filter_definitions:
 jobs:
   pulumi-preview:
     machine: true
-    resource_class: nazareno-peh-org/dev-runner # ou o nome que você registrou no runner
+    resource_class: nazareno-peh-org/dev-runner
     steps:
       - checkout
       - run:
-          name: Install uv and dependencies
+          name: Setup uv and sync dependencies
           command: |
-            # 1. Instala o uv se não estiver presente no runner
+            # 1. Garante a instalação do uv
             command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install.sh | sh
-            
-            # Garante o uv no PATH do CircleCI
             echo 'export PATH="$HOME/.local/bin:$PATH"' >> $BASH_ENV
             source $BASH_ENV
 
-            # 2. Sincroniza o projeto e ambiente virtual com uv
+            # 2. Sincroniza todas as dependências isoladas (incluindo pulumi-github)
             uv sync
       - run:
           name: Pulumi Preview via uv
@@ -52,15 +50,21 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Python dependencies
+          name: Setup uv and sync dependencies
           command: |
-            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-            if [ -f pyproject.toml ]; then pip install .; fi
+            # 1. Garante a instalação do uv
+            command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install.sh | sh
+            echo 'export PATH="$HOME/.local/bin:$PATH"' >> $BASH_ENV
+            source $BASH_ENV
+
+            # 2. Sincroniza todas as dependências isoladas
+            uv sync
       - run:
-          name: Pulumi Up
+          name: Pulumi Up via uv
           command: |
-            pulumi stack select dev || pulumi stack init dev
-            pulumi up --yes --color always --non-interactive
+            export PATH="$HOME/.local/bin:$PATH"
+            uv run pulumi stack select dev || uv run pulumi stack init dev
+            uv run pulumi up --yes --color always --non-interactive
 
 workflows:
   preview:
