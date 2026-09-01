@@ -24,19 +24,27 @@ filter_definitions:
 jobs:
   pulumi-preview:
     machine: true
-    resource_class: nazareno-peh-org/dev-runner
+    resource_class: nazareno-peh-org/dev-runner # ou o nome que você registrou no runner
     steps:
       - checkout
       - run:
-          name: Install Python dependencies
+          name: Install uv and dependencies
           command: |
-            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-            if [ -f pyproject.toml ]; then pip install .; fi
+            # 1. Instala o uv se não estiver presente no runner
+            command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install.sh | sh
+            
+            # Garante o uv no PATH do CircleCI
+            echo 'export PATH="$HOME/.local/bin:$PATH"' >> $BASH_ENV
+            source $BASH_ENV
+
+            # 2. Sincroniza o projeto e ambiente virtual com uv
+            uv sync
       - run:
-          name: Pulumi Preview
+          name: Pulumi Preview via uv
           command: |
-            pulumi stack select dev || pulumi stack init dev
-            pulumi preview --color always --non-interactive
+            export PATH="$HOME/.local/bin:$PATH"
+            uv run pulumi stack select dev || uv run pulumi stack init dev
+            uv run pulumi preview --color always --non-interactive
 
   pulumi-up:
     machine: true
